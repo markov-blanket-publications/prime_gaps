@@ -120,7 +120,7 @@ random with respect to $F_{\theta}$.
 \section{A derivation of the maximum entropy distribution}
 
 Let's define the sequence $\mathbb{P} = \{p_k\}_{k=1}^\infty \subset \mathbb{N}$
-such that $k \in \mathbb{P}$ if and only if $x_k = 1$. Then the $\ln(N)$ term in 
+such that $p_k \in \mathbb{P}$ if and only if $x_{p_k} = 1$. Then the $\ln(N)$ term in 
 (4) implies that the elements of $\mathbb{P}$ are in some sense uniformly distributed in $X_N$. 
 
 Given that there are $k$ distinct ways to sample uniformly from $[1,k]$ and a frequency of $\frac{1}{k}$ associated with the event $(k-1,k] \cap \mathbb{P} \neq \emptyset$ the average entropy rate has a natural interpretation. 
@@ -128,7 +128,7 @@ Given that there are $k$ distinct ways to sample uniformly from $[1,k]$ and a fr
 By breaking $\sum_{k=1}^N \frac{1}{k}$ into $\pi(N)$ disjoint blocks of size $[p_k,p_{k+1}]$ where $p_k, p_{k+1} \in \mathbb{P}$: 
 
 \begin{equation}
-\sum_{k=1}^N \frac{1}{k}	 \approx \sum_{k=1}^{\pi(N)} \sum{n=p_k}^{p_{k+1}} \frac{1}{n} = \sum_{k=1}^{\pi(N)} (p_{k+1}-p_k) \cdot P(p_k) \approx \ln(N)
+\sum_{k=1}^N \frac{1}{k}	 \approx \sum_{k=1}^{\pi(N)} \sum_{n=p_k}^{p_{k+1}} \frac{1}{n} = \sum_{k=1}^{\pi(N)} (p_{k+1}-p_k) \cdot P(p_k) \approx \ln(N)
 \end{equation}
 
 where $P(p_k)= \frac{1}{p_{k+1}-p_k}\sum_{n=p_k}^{p_{k+1}} \frac{1}{n}$. 
