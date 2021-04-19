@@ -72,7 +72,13 @@ Given a rare-event process $X$, a scientist may only collect a finite number of 
 This process is deterministic if there exists a computable function $f$ such that: 
 
 \begin{equation}
-x_{n+1} = f \circ x_n	
+x_{n+1} = f \circ x_{1:n}	
+\end{equation}
+
+and inductive generalisation is possible if there exists $k < \infty$ such that: 
+
+\begin{equation}
+x_{n+1} = f \circ x_{n-k:n}	
 \end{equation}
 
 and if there exists an asymptotic formula $\pi(N)$ such that for large $N$, 
@@ -90,21 +96,21 @@ S_c = \frac{\log_2 (2^N)}{\pi(N)} = \frac{N}{\pi(N)} \sim \ln(N)
 where $2^N$ is exactly the number of possible binary encodings of length $N$ and 
 $\sim \ln(N)$ implies that the rate of entropy production is maximal. (3) also implies that $X_N$ may not be compressed into fewer than $\pi(N) \cdot \ln(N)$ bits without being certain that information will be lost. 
 
+\newpage
+
 In fact, $X_N$ is asymptotically incompressible in the sense that: 
 
 \begin{equation}
 \mathbb{E}[K(X_N)] \sim 	\pi(N) \cdot \ln(N) \sim N
 \end{equation}
 
-as (3) states that on average each observation $x_i$ is a surprising event.
-
-\newpage  
+as (3) states that on average each observation $x_i$ is a surprising event.  
 
 Now, a direct implication of (4) is that any approximation $\hat{f} \in F_{\theta}$ of $f$ discovered using machine learning or another scientific 
 method such that the Kronecker delta satisfies: 
 
 \begin{equation}
-\forall n \in [1,N], \delta_{\hat{f}(x_n),x_{n+1}} = 1	
+\forall n \in [1,N], \delta_{\hat{f}(x_{n-k:n}),x_{n+1}} = 1	
 \end{equation}
 
 has an algorithmic complexity that scales as follows: 
@@ -150,7 +156,7 @@ Having clarified the rate of entropy production of $X$ we may consider a practic
 Let's suppose we have a natural signal described by the process $X$: 
 
 \begin{equation}
-x_n \in \{0,1\}, x_{n+1} = \varphi \circ x_n	
+x_n \in \{0,1\}, x_{n+1} = \varphi \circ x_{1:n}	
 \end{equation}
 
 If we should use machine learning to approximate $\varphi$ given the datasets 
@@ -158,20 +164,21 @@ $X_N^{\text{train}}= \{x_i\}_{i=1}^N,X_N^{\text{test}}= \{x_i\}_{i=N+1}^{2N}$
 such that for any $\hat{f} \in F_{\theta}$: 
 
 \begin{equation}
-x_{n+1} = \hat{f} \circ x_n \Rightarrow \delta_{\hat{f}(x_n),x_{n+1}} = 1	
+\exists k \in [1,n-1], x_{n+1} = \hat{f} \circ x_{n-k:n} \Rightarrow \delta_{\hat{f}(x_{n-k:n}),x_{n+1}} = 1	
 \end{equation}
 
 then $X_N$ is asymptotically incompressible if for large $N$ any solution to the 
 empirical risk minimisation problem: 
 
 \begin{equation}
-\hat{f} = \max_{f \in F_{\theta}} \frac{1}{N} \sum_{i=1}^N \delta_{f(x_n),x_{n+1}}
+\hat{f} = \max_{f \in F_{\theta}} \frac{1}{N-k} \sum_{n=k+1}^N \delta_{f(x_{n-k:n}),x_{n+1}}
 \end{equation}
 
 has an expected performance: 
 
 \begin{equation}
-\frac{1}{N} \sum_{n=N+1}^{2N-1} \delta_{f(x_n),x_{n+1}} \leq \frac{1}{2}
+\frac{1}{N} \sum_{n=N+k+1}^{2N-1} \delta_{\hat{f}(x_{n-k:n}),x_{n+1}}
+ \leq \frac{1}{2}
 \end{equation}
 
 Furthermore, if the dataset is imbalanced i.e. $\frac{1}{N} \sum_{i=1}^N x_i \neq \frac{1}{2}$ then we may generalise this result by introducing the auxiliary definitions: 
@@ -181,7 +188,7 @@ y_n = x_{n+1}
 \end{equation}
 
 \begin{equation}
-\hat{y_n} = \hat{f} \circ x_n	
+\hat{y_n} = \hat{f} \circ x_{n-k:n}
 \end{equation}
 
 \begin{equation}
@@ -189,17 +196,17 @@ y_n = x_{n+1}
 \end{equation}
 
 \begin{equation}
-N_1 = \sum_{n=N+1}^{2N} \delta_{y_n,1}	
+N_1 = \sum_{n=N+k+1}^{2N} \delta_{y_n,1}	
 \end{equation}
 
 \begin{equation}
-N_0 = \sum_{n=N+1}^{2N} \delta_{y_n,0}	
+N_0 = \sum_{n=N+k+1}^{2N} \delta_{y_n,0}	
 \end{equation}
 
 and so for large $N$, we have: 
 
 \begin{equation}
-\mathcal{L}_N[\hat{f}] = \min \Big[\frac{1}{N_0} \sum_{n=N+1}^{2N-1} \delta_{y_n,0} \cdot \beta_n,  \frac{1}{N_1} \sum_{n=N+1}^{2N-1} \delta_{y_n,1} \cdot \beta_n \Big] \leq \frac{1}{2}
+\mathcal{L}_N[\hat{f}] = \min \Big[\frac{1}{N_0} \sum_{n=N+k+1}^{2N-1} \delta_{y_n,0} \cdot \beta_n,  \frac{1}{N_1} \sum_{n=N+k+1}^{2N-1} \delta_{y_n,1} \cdot \beta_n \Big] \leq \frac{1}{2}
 \end{equation}
 
 and therefore:
