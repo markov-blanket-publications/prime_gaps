@@ -150,7 +150,7 @@ Having clarified the rate of entropy production of $X$ we may consider a practic
 Let's suppose we have a natural signal described by the process $X$: 
 
 \begin{equation}
-x_n \in \{0,1\}, x_{n+1} = \varphi \circ x_n 	
+x_n \in \{0,1\}, x_{n+1} = \varphi \circ x_n	
 \end{equation}
 
 If we should use machine learning to approximate $\varphi$ given the datasets 
@@ -199,14 +199,14 @@ N_0 = \sum_{n=N+1}^{2N} \delta_{y_n,0}
 and so for large $N$, we have: 
 
 \begin{equation}
-\frac{1}{2} \sum_{n=N+1}^{2N-1} \Big(\frac{\delta_{y_n,1} \cdot \beta_n}{N_1} + \frac{\delta_{y_n,0} \cdot \beta_n}{N_0} \Big) \leq \frac{1}{2}
+\mathcal{L}_N[\hat{f}] = \min \Big[\frac{1}{N_0} \sum_{n=N+1}^{2N-1} \delta_{y_n,0} \cdot \beta_n,  \frac{1}{N_1} \sum_{n=N+1}^{2N-1} \delta_{y_n,1} \cdot \beta_n \Big] \leq \frac{1}{2}
 \end{equation}
 
-which implies that the true-positive rate is an unbiased estimator of (18):
+and therefore:
 
 
 \begin{equation}
-\frac{1}{N_1}\sum_{n=N+1}^{2N-1} \delta_{y_n,1} \cdot \beta_n \leq \frac{1}{2}
+\forall \hat{f} \in F_{\theta}, \lim_{N \to \infty} P(\mathcal{L}_N[\hat{f}] > \frac{1}{2}) = 0
 \end{equation}
 
 Finally, as these results are invariant to transformations that preserve the 
@@ -217,7 +217,7 @@ for algorithmically-random data.
 
 \section{Discussion}
 
-Given that the prime numbers are the only known rare-event process with a distribution satisfying (4): 
+A useful interpretation of (19) is that the sample-complexity of the target function $\varphi$ is infinite and therefore it is not learnable. Moreover, given that the prime numbers are the only known rare-event process with a distribution satisfying (4): 
 
 \begin{equation}
 \pi(N) \sim \frac{N}{\ln(N)}	
