@@ -1,0 +1,413 @@
+\documentclass{article}
+
+% ready for submission
+\usepackage{arxiv}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{amssymb}
+\usepackage{amsmath}}
+
+\newcommand{\gsim}{\gtrsim}
+\newcommand{\lsim}{\lesssim}
+
+
+
+\title{An information-theoretic upper bound on prime gaps}
+
+\date{September 1, 2021}
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to LaTeX to determine where to break the
+% lines. Using \AND forces a line break at that point. So, if LaTeX puts 3 of 4
+% authors names on the first line, and the last on the second line, try using
+% \AND instead of \And before the third author name.
+
+\author{%
+  Aidan Rocke\\
+  \texttt{aidanrocke@gmail.com} \\
+  % examples of more authors
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \AND
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Within the setting of rare event modelling, the method of level sets allows 
+us to define an equivalence relation over rare events with distinct rates of entropy production. As a measure of the efficacy of this method it is applied to Cramér's conjecture, an open problem in probabilistic number theory. 
+\end{abstract}
+
+\section{Classifying rare events using level sets}
+ 
+Sequences of rare events that are not finite-state compressible are recurrent, of variable frequency, and unpredictable relative to a finite-state machine such as a machine learning model. For these reasons, they are of great scientific interest. But, how might we classify rare events that satisfy these criteria? 
+
+If we identify rare events using the function $1_X: \mathbb{N} \rightarrow \{0,1\}$, we may analyse the rate of
+entropy production of the computable binary sequence $X_n = \{x_i\}_{i=1}^n \in \{0,1\}^n$. In order to qualify as a rare event, a randomly sampled element $x_z$ of the sequence $X_n$ must generally
+pass $\pi_x(n)$ tests. These tests $A_i, A_{j \neq i} \in \{A_i\}_{i=1}^{\pi_x(n)}$ are de-correlated as rare events are assumed to be independent of each other: 
+
+\begin{equation}
+\forall z \sim U([1,n]), P(z \in A_i \land z \in A_{j \neq i}) = P(z \in A_i ) \cdot P(z \in A_{j \neq i})
+\end{equation}
+
+where the $P(z \in A_i )$ have a natural frequentist interpretation. We generally assume that the tests are consistent so $\{A_i\}_{i=1}^{\pi_x(n)} \subset \{A_i\}_{i=1}^{\pi_x(n+1)}$ where $\pi_{x}(n)$ counts the number of rare events in the time interval $[1,n]$ so it is monotonically increasing. Given (1), we may define the average \textit{probability density} using the inclusion-exclusion principle:
+
+\begin{equation}
+\forall z \sim U([1,n]), P(x_z =1) = P(z \in \bigcap_{k \leq \pi_x(n)} A_k) = \prod_{k=1}^{\pi_x(n)} P(z \in A_k)
+\end{equation}
+
+as well as the entropy of the uniformly distributed random variable:
+
+\begin{equation}
+\forall z \sim U([1,n]), H(X_n) = -\sum_{\lambda =1}^n \frac{1}{n} \cdot \ln P(x_z =1) = -\ln \prod_{k=1}^{\pi_x(n)} P(z \in A_k)
+\end{equation}
+
+which is a measure of expected surprise, or the expected information gained from observing a rare event.
+
+Having defined the entropy (3), we may compare the entropies of distinct sequences using the typical probabilities
+$q_n \in (0,1)$, which allow us to define an equivalence relation over entropies:
+
+\begin{equation}
+\mathcal{L}_{q_n} = \{X_n \in \{0,1\}^{\infty}: \ln \big(\frac{1}{q_n}\big) \sim H(X_n) \}
+\end{equation}
+
+\newpage 
+
+Finally, (5) implies that:
+
+\begin{equation}
+\forall X_n \in \mathcal{L}_{q_n}, \lim_{n \to \infty} -\frac{\ln q_n}{H(X_n)} = 1
+\end{equation}
+
+so the entropy rates of distinct sequences $X_n,X'_n \in \mathcal{L}_{q_n}$ are
+asymptotically equivalent. From a data compression perspective, this tells us 
+that in the asymptotic limit we need $\sim \ln \big(\frac{1}{q_n}\big)$ bits in order to compress a particular class of rare events. 
+
+One more interesting consequence is that the following holds \textit{asymptotically almost surely}: 
+
+\begin{equation}
+\frac{\partial}{\partial q_n} H(X_n) = \frac{\partial}{\partial q_n} -\ln q_n \implies \forall z \sim U([1,N]), P(x_z = 1) \sim q_N
+\end{equation} 
+
+and therefore for large $N \in \mathbb{N}$:
+
+\begin{equation}
+\pi_x(N) \sim N \cdot q_N 	
+\end{equation} 
+
+\subsection{Statistical generalisations of the Prime Number Theorem}
+
+From statistical considerations, Gauss and Legendre inferred that the density of primes at $n \in \mathbb{N}$ is on the order of $\sim \frac{1}{\ln n}$. This led them to conjecture that the number of primes less than $N$ is on the order of:
+
+\begin{equation}
+\pi(N) \sim \int_{2}^N \frac{1}{\ln x} dx \sim N \cdot \frac{1}{\ln N}
+\end{equation}
+
+which is equivalent to the Prime Number Theorem.
+
+However, given our assumptions we are more generally interested in the family of density functions that satisfy:  
+
+\begin{equation}
+0 < c \ll N, \int_{c}^N \frac{1}{f(x)} dx \sim N \cdot \frac{1}{f(N)}
+\end{equation}
+
+where $f$ is analytic and $\lim\limits_{N \to \infty} \frac{1}{f(N)}=0$. Using integration by parts, this is equivalent to the criterion:
+
+\begin{equation}
+\int_{c}^N g(x) dx = N \cdot g(N) - c \cdot g(c) - \int_{c}^N x \cdot g'(x) dx \sim N \cdot g(N)
+\end{equation}
+
+where $g(x)=\frac{1}{f(x)}$, and $g(x)$ dominates $x \cdot g'(x)$.
+So this family naturally includes density functions of the form:
+
+\begin{equation}
+\exists a > 0 \forall x \in \mathbb{R}_+, g(x) = (\ln x)^{-a}
+\end{equation}
+
+which we may call the log-zeta distribution in the sense that the un-normalised zeta distribution
+is given by:
+
+\begin{equation}
+\forall s >1, \zeta(s) = \zeta_s \circ \mathbb{N} = \sum_{n \in \mathbb{N}} \frac{1}{n^s}
+\end{equation}
+
+and if we log-transform the state-space $\mathbb{N}$ we have:
+
+\begin{equation}
+\forall s >1, \zeta_s \circ \ln \big(\mathbb{N}\big) = \sum_{n \in \mathbb{N}} \frac{1}{(\ln n)^s}
+\end{equation}
+
+where the logarithm transports us from the space of integers to the space of bits. It is worth adding that prime numbers are of great interest to rare-event modellers as they are not finite-state compressible. This follows from the fact that there are infinitely many primes and the storage requirement for large primes $n \in \mathbb{N}$ scales as follows [8]:
+
+\begin{equation}
+K_U(n) \sim \log_2(n)
+\end{equation}
+
+\subsection{The typical probability as the average probability}
+
+Given that the density $g(x) = (\ln x)^{-a}$ is Riemann-Integrable on $[2,N]$ for $N < \infty$, by the Intermediate Value Theorem there exists a sequence $x_n \in [n,n+1]$ such that: 
+
+\begin{equation}
+\int_{2}^N (\ln x)^{-a} dx = \sum_{n=2}^N \frac{1}{(\ln x_n)^a}
+\end{equation}
+
+and since $\forall n \in \mathbb{N}, 1 \leq \big(\frac{\ln x_n}{\ln n}\big)^a \leq \big(\frac{\ln (n+1)}{\ln n}\big)^a$ where $\forall a > 0, \lim\limits_{n \to \infty} \big(\frac{\ln (n+1)}{\ln n}\big)^a = 1$ so we have: 
+
+\begin{equation}
+\int_{2}^N (\ln x)^{-a} dx \sim \sum_{n=2}^N \frac{1}{(\ln n)^a} \sim N \cdot \frac{1}{(\ln N)^a}
+\end{equation}
+
+and therefore the typical probability is asymptotically equivalent to the 
+average probability: 
+
+\begin{equation}
+q_N \sim \frac{1}{N} \sum_{n=2}^N \frac{1}{(\ln n)^a} 	
+\end{equation}
+
+In fact, for large $n$ the average probability density in (3) may be expressed as: 
+
+\begin{equation}
+\forall z \sim U([1,n]), P(x_z = 1) \sim \frac{1}{n} \sum_{k=1}^n P(x_k = 1)	\end{equation}
+
+since $P(x_{n+1}=1) \approx (n+1) \cdot q_{n+1} - n \cdot q_n = q_{n+1} + n \cdot (q_{n+1}-q_n) \sim q_{n+1}$. 
+
+\subsection{The advantage of using the exponential of entropy}
+
+It is worth noting that the \textit{entropy rate} $\frac{1}{q_n}$ corresponds 
+to the exponential of entropy
+
+\begin{equation}
+\frac{1}{q_n} \approx e^{H(X_n)}	
+\end{equation}
+
+which has the advantage of being 
+parametrisation invariant i.e. not depending on the choice of base for logarithms. This generally allows us to simplify calculations. Moreover, this is a robust measure for the expected number of observations that we need to collapse the entropy $H(X_n)$. Equivalently, it is a robust measure of the average distance between rare events. 
+
+On the other hand, the \textit{typical probability} $q_n$ corresponds to the 
+density of rare events at the instant $n \in \mathbb{N}$. It may also be understood as the frequency with which we collapse the entropy $H(X_n)$ at the instant $n \in \mathbb{N}$. We may also observe that the typical probability $q_n$ and entropy rate $\frac{1}{q_n}$ are both parametrisation invariant as they are multiplicative inverses of each other.
+Together they form the basis for the method of level sets which provides us with 
+the necessary and sufficient apparatus for classifying sequences of rare events 
+in terms of their rate of entropy production.  
+
+\subsection{A remark on applications of the level set method}
+
+In practice, the empirical data will consist of a binary sequence of rare event 
+observations and the actual tests are generally unknown. These may be modelled 
+as latent variables that are a function of discrete time(i.e. the integers) as 
+well as hidden variables that provide us with initial conditions. Thus, we shall 
+generally assume that empirical binary sequences are the output of a discrete dynamical system.
+
+One potential application in the area of risk management involves (1) deriving a density function using non-linear regression to predict the frequency of future rare events as well as using such a density function to (2) calculate upper and lower-bounds on the waiting time between events. As a concrete demonstration, we shall consider the application of the level set method to an open problem in probabilistic number theory. 
+
+\newpage 
+
+\section{Application to Cramér's random model, Part I}
+
+Using the method of level sets, we may demonstrate that the typical probability that an
+integer in the interval $[1,n] \subset \mathbb{N}$ is prime is given by:
+
+\begin{equation}
+\forall z \sim U([1,n]), P(z \in \mathbb{P}) \sim \frac{1}{\ln n}
+\end{equation}
+
+If $X_n = \{x_i\}_{i=1}^n \in \{0,1\}^n$ defines a prime encoding i.e. a sequence where $x_k = 1$ if $k \in \mathbb{P}$
+and $x_k = 0$ otherwise, then we may define $\pi(\sqrt{n})$ primality tests as any composite integer in $[1,n]$
+has at most $\pi(\sqrt{n})$ distinct prime factors:
+
+\begin{equation}
+\forall A_p \in \{A_{p_k}\}_{k=1}^{\pi(\sqrt{n})}, A_p = \{z \in [1,n]: \text{gcd}(p,z) = 1\} \bigcup \{p\}
+\end{equation}
+
+and we'll note that $\forall z \sim U([1,n]), P(z \in A_{p \geq \sqrt{n}}) = 1- \frac{1}{n} + \frac{1}{n}=1$ so we have: 
+
+\begin{equation}
+\forall z \sim U([1,n]), H(X_n) = -\ln \prod_{k=1}^{\pi(n)} P(z \in A_{p_k})
+ = -\ln \prod_{k=1}^{\pi(\sqrt{n})} P(z \in A_{p_k})
+\end{equation}
+
+In order to define $P(z \in A_{p_k})$ we shall implicitly use the approximation that for $p \leq \sqrt{n}, \frac{1}{p}-\frac{1}{n} \approx \frac{1}{p}$ so we have:
+
+\begin{equation}
+\forall z \sim U([1,n]), P(z \in A_{p_k}) = \big(1-\frac{1}{p_k}\big) + \frac{1}{n} \approx \big(1-\frac{1}{p_k}\big)
+\end{equation}
+
+which allows us to make (22) precise:
+
+\begin{equation}
+H(X_n) = -\ln \prod_{p \leq \sqrt{n}} \big(1-\frac{1}{p}\big)
+\end{equation}
+
+Using Mertens' third theorem we have:
+
+\begin{equation}
+\prod_{p \leq \sqrt{n}} \big(1-\frac{1}{p}\big) \approx \frac{e^{-\gamma}}{\frac{1}{2} \cdot \ln n} \approx \frac{0.9}{\ln n}
+\end{equation}
+
+so we may infer that:
+
+\begin{equation}
+H(X_n) \sim \ln \ln n
+\end{equation}
+
+and therefore $X_n \in \mathcal{L}_{q_n}$ where:
+
+\begin{equation}
+\mathcal{L}_{q_n} = \{X_n \in \{0,1\}^{\infty}: H(X_n) \sim \ln\ln n \}
+\end{equation}
+
+From (27), we may deduce (20):
+
+\begin{equation}
+\forall z \sim U([1,n]), q_n = P(z \in \mathbb{P}) \sim \frac{1}{\ln n}
+\end{equation}
+
+which means that the density of the primes at $x \in \mathbb{N}$ is on the order 
+of $\sim \frac{1}{\ln x}$ and therefore the expected number of primes less than $n$ is given by: 
+
+\begin{equation}
+\pi(n) \sim \int_{2}^n \frac{1}{\ln x} dx \sim \frac{n}{\ln n}
+\end{equation}
+
+in complete agreement with the Prime Number Theorem. 
+
+\newpage 
+
+\section{Application to Cramér's random model, Part II}
+
+Given the prime encoding $X_n$, let's define the nth prime gap $G_n=p_{n+1}-p_n$ so we may consider the cumulative probability:
+
+\begin{equation}
+\sum_{k=1}^{G_n} P(x_{p_n + k} = 1 \land p_{n+1}-p_n = k) = 1
+\end{equation}
+
+where $G_n < p_n$ due to Bertrand's postulate and $P(p_{n+1}-p_n=k) = 1$ if and only if we simultaneously measure the values of both $p_n$ and $p_{n+1}$.
+
+As the subsequence $\{x_{p_{n+k}}\}_{k=1}^{G_n}$ halts at $k \in [1,G_n]$ where $x_{p_n+k}=1$, there are at most $G_n$ possible
+ways for this sequence to halt. Furthermore, in order to bound the \textit{halting probability} $P(x_{p_n + k} = 1 \land p_{n+1}-p_n = k)$ we may use the density formula (29) to consider its components:
+
+\begin{equation}
+\forall k \sim U([1,G_n]), P(p_{n+1} = p_n + k) = P(p_n = p_{n+1} -k) \sim \frac{1}{\ln p_n}
+\end{equation}
+
+\begin{equation}
+\forall k \sim U([1,G_n]),P(x_{p_n + k} = 1) \sim \frac{1}{\ln p_n}
+\end{equation}
+
+where
+
+\begin{equation}
+P(x_{p_n + k} = 1 \land p_{n+1}-p_n = k) \geq P(x_{p_n + k} = 1) \cdot P(p_{n+1} = p_n + k)
+\end{equation}
+
+Using (31),(32) and (33) we may derive the lower bound:
+
+\begin{equation}
+\forall k \sim U([1,G_n]),P(x_{p_n + k} = 1 \land p_{n+1}-p_n = k) \gsim \frac{1}{(\ln p_n)^2}
+\end{equation}
+
+which implies:
+
+\begin{equation}
+\frac{1}{(\ln p_n)^2} \lsim \frac{1}{G_n} \sum_{k=1}^{G_n} P(x_{p_n + k} = 1 \land p_{n+1}-p_n = k) = \frac{1}{G_n}
+\end{equation}
+
+and since $G_n = p_{n+1}-p_n$, we may conclude:
+
+\begin{equation}
+p_{n+1}-p_n = \mathcal{O}((\ln p_n)^2)
+\end{equation}
+
+as conjectured by Harald Cramér in 1936 [1].
+
+\newpage
+
+\section{Details of the $\frac{1}{p} - \frac{1}{n} \approx \frac{1}{p}$ approximation in Cramér's model}
+
+If we define,
+
+\begin{equation}
+\Lambda_k := \text{set of } {\pi(\sqrt{n}) \choose k} \text{ distinct subsets of } \{p_k\}_{k=1}^{\pi(\sqrt{n})}
+\end{equation}
+
+then $\lvert \Lambda_k \rvert = {\pi(\sqrt{n}) \choose k}$ and we may derive the absolute error:
+
+\begin{equation}
+\Big\lvert \prod_{p \leq \sqrt{n}} \big(1-\frac{1}{p} + \frac{1}{n}) - \prod_{p \leq \sqrt{n}} \big(1-\frac{1}{p}\big) \Big\rvert \leq \sum_{k=1}^{\pi(\sqrt{n})-1} \frac{1}{n^k} \sum_{\lambda \in \Lambda_k} \prod_{p \in \lambda} \big(1-\frac{1}{p}\big) + \frac{1}{n^{\pi(\sqrt{n})}}
+\end{equation}
+
+and given that:
+
+\begin{equation}
+\pi(\sqrt{n}) < \sqrt{n} \implies \frac{1}{n^k} \cdot {\pi(\sqrt{n}) \choose k} \leq \frac{1}{n^{k/2}}
+\end{equation}
+
+the absolute error satisfies the following inequality:
+
+\begin{equation}
+\Delta_n = \Big\lvert \prod_{p \leq \sqrt{n}} \big(1- \frac{1}{p}+\frac{1}{n}\big) - \prod_{p \leq \sqrt{n}} \big(1- \frac{1}{p}\big)  \Big\rvert \leq \frac{1}{\sqrt{n}} + \frac{1}{n}
+\end{equation}
+
+so the relative error converges to zero:
+
+\begin{equation}
+\lim_{n \to \infty} \frac{\Delta_n}{\prod_{p \leq \sqrt{n}} \big(1- \frac{1}{p}\big)} \leq \lim_{n \to \infty} \big(\frac{\ln n}{\sqrt{n}} + \frac{\ln n}{n}\big) = 0
+\end{equation}
+
+which provides us with the necessary justifications in our derivation of Cramér's random model, specifically
+formulas (24),(25) and (26).
+
+\section*{References}
+
+\small
+
+\textbf{References:}
+
+[1] Cramér, H. "On the Order of Magnitude of the Difference Between Consecutive Prime Numbers." Acta Arith. 2, 23-46, 1936.
+
+[2] Hardy, G. H.; Ramanujan, S. (1917), "The normal number of prime factors of a number n", Quarterly Journal of Mathematics
+
+[3] Turán, Pál (1934), "On a theorem of Hardy and Ramanujan", Journal of the London Mathematical Society
+
+[4] Yufei Zhao. The Probabilistic Method in Combinatorics. 2019.
+
+[5] F. Mertens. J. reine angew. Math. 78 (1874)
+
+[6] Olivier Rioul. This is IT: A Primer on Shannon’s Entropy and Information. Séminaire Poincaré. 2018.
+
+[7] E.T. Jaynes. Information Theory and Statistical Mechanics. The Physical Review. 1957.
+
+[8] Lance Fortnow. Kolmogorov Complexity. 2000.
+
+\newpage 
+
+
+
+\end{document}
