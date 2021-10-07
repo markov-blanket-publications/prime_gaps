@@ -165,11 +165,7 @@ and if we log-transform the state-space $\mathbb{N}$ we have:
 \forall s >1, \zeta_s \circ \ln \big(\mathbb{N}\big) = \sum_{n \in \mathbb{N}} \frac{1}{(\ln n)^s}
 \end{equation}
 
-where the logarithm transports us from the space of integers to the space of bits. It is worth adding that prime numbers are of great interest to rare-event modellers as they are not finite-state compressible. This follows from the fact that there are infinitely many primes and the storage requirement for large primes $n \in \mathbb{N}$ scales as follows [8]:
-
-\begin{equation}
-K_U(n) \sim \log_2(n)
-\end{equation}
+where the logarithm transports us from the space of integers to the space of bits. It is worth adding that \textit{prime encodings} are of great interest to rare-event modellers as they are not finite-state compressible. This follows from the fact that the prime numbers are empirically-distributed as if they were arranged uniformly, an immediate consequence of the information-theoretic derivation of the Prime Number Theorem [9]. 
 
 \subsection{The typical probability as the average probability}
 
@@ -192,7 +188,7 @@ average probability:
 q_N \sim \frac{1}{N} \sum_{n=2}^N \frac{1}{(\ln n)^a} 	
 \end{equation}
 
-In fact, for large $n$ the average probability density in (3) may be expressed as: 
+In fact, for large $n$ the average probability density in (2) may be expressed as: 
 
 \begin{equation}
 \forall z \sim U([1,n]), P(x_z = 1) \sim \frac{1}{n} \sum_{k=1}^n P(x_k = 1)	\end{equation}
@@ -225,9 +221,64 @@ as latent variables that are a function of discrete time(i.e. the integers) as
 well as hidden variables that provide us with initial conditions. Thus, we shall 
 generally assume that empirical binary sequences are the output of a discrete dynamical system.
 
-One potential application in the area of risk management involves (1) deriving a density function using non-linear regression to predict the frequency of future rare events as well as using such a density function to (2) calculate upper and lower-bounds on the waiting time between events. As a concrete demonstration, we shall consider the application of the level set method to an open problem in probabilistic number theory. 
+Assuming that deep neural networks may be used as universal data compressors, we may determine whether the data is finite-state incompressible using a machine-learning driven overfitting test provided in the appendix. As a concrete demonstration of the analytical power of the level set method, we shall consider its application to an open problem in probabilistic number theory. 
+
+However, we must first carefully go over the information-theoretic derivation of the Prime Number Theorem [9]. 
 
 \newpage 
+
+\section{Information-theoretic derivation of the Prime Number Theorem}
+
+If we know nothing about the distribution of primes, in the worst case we 
+may assume that each prime less than or equal to $N$ is drawn uniformly from $[1,N]$. So our source of primes is: 
+
+\begin{equation}
+X \sim U([1,N])	
+\end{equation}
+
+where $H(X) = \ln N$ is the Shannon entropy of the uniform distribution. 
+
+Now, we may define the prime encoding of $[1,N]$ as the binary sequence $X_N = \{x_n\}_{n=1}^N$ where $x_n = 1$ if $n$ is prime and $x_n = 0$ otherwise. With no prior knowledge, given that each integer is either prime or not prime, we have $2^N$ possible prime encodings in $[1,N] \subset \mathbb{N}$. 
+
+If there are $\pi(N)$ primes less than or equal to $N$ then the average number of bits per arrangement gives us the average amount of information gained from correctly identifying each prime in $[1,N]$ as: 
+
+\begin{equation}
+S_c = \frac{\log_2 (2^N)}{\pi(N)} = \frac{N}{\pi(N)}	
+\end{equation}
+
+and if we assume a maximum entropy distribution over the primes then we would expect that each prime is drawn from a uniform distribution as in (19). So we would have: 
+
+\begin{equation}
+S_c = \frac{N}{\pi(N)} \sim \ln N	
+\end{equation}
+
+As for why the natural logarithm appears in (21), we may first note that the base of the logarithm in the Shannon Entropy may be freely chosen without changing its properties. Moreover, given the assumptions the expected information gained from observing each prime in $[1,N]$ is on the order of: 
+
+\begin{equation}
+\sum_{k=1}^{N-1} \frac{1}{k} \cdot |(k,k+1]| = \sum_{k=1}^{N-1} \frac{1}{k} \approx \ln N
+\end{equation}
+
+as there are $k$ distinct ways to sample uniformly from $[1,k]$ and a frequency of $\frac{1}{k}$ associated with the event that $k \in \mathbb{P}$. 
+
+This implies that the average number of bits per prime number is given by $\frac{N}{\pi(N)} \sim \ln N$. Rearranging, we find: 
+
+\begin{equation}
+\frac{\pi(N)}{N} \sim \frac{1}{\ln N}	
+\end{equation}
+
+which is in complete agreement with the Prime Number Theorem. Moreover, this derivation indicates that the prime numbers are empirically distributed as if they were arranged uniformly.  
+
+\subsection{The Shannon source coding theorem and the algorithmic randomness of prime encodings}
+
+By the Shannon source coding theorem, we may infer that $\pi(N)$ primes can't be compressed into fewer than $\pi(N) \cdot \ln N$ bits. Furthermore, as the expected Kolmogorov Complexity equals the Shannon entropy for computable probability distributions: 
+
+\begin{equation}
+\mathbb{E}[K(X_N)] \sim 	\pi(N) \cdot \ln N \sim N
+\end{equation}
+
+where the identification of $\mathbb{E}[K(X_N)]$ with $\pi(N) \cdot \ln N$ is a direct consequence of the fact that $K(X_N)$ measures the information gained from observing $X_N$ and $\pi(N) \cdot \ln N$ measures the expected information gained from observing $X_N$. From an information-theoretic perspective, this implies that prime encodings are finite-state incompressible.
+
+The only implicit assumption in this derivation is that all the information in the Universe is conserved as it is only in such Universes that Occam's razor is generally applicable. The Law of Conservation of information which dates back to Von Neumann essentially states that the Von Neumann entropy is invariant to Unitary transformations. 
 
 \section{Application to Cramér's random model, Part I}
 
@@ -259,7 +310,7 @@ In order to define $P(z \in A_{p_k})$ we shall implicitly use the approximation 
 \forall z \sim U([1,n]), P(z \in A_{p_k}) = \big(1-\frac{1}{p_k}\big) + \frac{1}{n} \approx \big(1-\frac{1}{p_k}\big)
 \end{equation}
 
-which allows us to make (22) precise:
+which allows us to make (27) precise:
 
 \begin{equation}
 H(X_n) = -\ln \prod_{p \leq \sqrt{n}} \big(1-\frac{1}{p}\big)
@@ -283,7 +334,7 @@ and therefore $X_n \in \mathcal{L}_{q_n}$ where:
 \mathcal{L}_{q_n} = \{X_n \in \{0,1\}^{\infty}: H(X_n) \sim \ln\ln n \}
 \end{equation}
 
-From (27), we may deduce (20):
+From (32), we may deduce (25):
 
 \begin{equation}
 \forall z \sim U([1,n]), q_n = P(z \in \mathbb{P}) \sim \frac{1}{\ln n}
@@ -311,7 +362,7 @@ Given the prime encoding $X_n$, let's define the nth prime gap $G_n=p_{n+1}-p_n$
 where $G_n < p_n$ due to Bertrand's postulate and $P(p_{n+1}-p_n=k) = 1$ if and only if we simultaneously measure the values of both $p_n$ and $p_{n+1}$.
 
 As the subsequence $\{x_{p_{n+k}}\}_{k=1}^{G_n}$ halts at $k \in [1,G_n]$ where $x_{p_n+k}=1$, there are at most $G_n$ possible
-ways for this sequence to halt. Furthermore, in order to bound the \textit{halting probability} $P(x_{p_n + k} = 1 \land p_{n+1}-p_n = k)$ we may use the density formula (29) to consider its components:
+ways for this sequence to halt. Furthermore, in order to bound the \textit{halting probability} $P(x_{p_n + k} = 1 \land p_{n+1}-p_n = k)$ we may use the density formula (34) to consider its components:
 
 \begin{equation}
 \forall k \sim U([1,G_n]), P(p_{n+1} = p_n + k) = P(p_n = p_{n+1} -k) \sim \frac{1}{\ln p_n}
@@ -327,7 +378,7 @@ where
 P(x_{p_n + k} = 1 \land p_{n+1}-p_n = k) \geq P(x_{p_n + k} = 1) \cdot P(p_{n+1} = p_n + k)
 \end{equation}
 
-Using (31),(32) and (33) we may derive the lower bound:
+Using (36),(37) and (38) we may derive the lower bound:
 
 \begin{equation}
 \forall k \sim U([1,G_n]),P(x_{p_n + k} = 1 \land p_{n+1}-p_n = k) \gsim \frac{1}{(\ln p_n)^2}
@@ -382,7 +433,7 @@ so the relative error converges to zero:
 \end{equation}
 
 which provides us with the necessary justifications in our derivation of Cramér's random model, specifically
-formulas (24),(25) and (26).
+formulas (29),(30) and (31).
 
 \section*{References}
 
@@ -406,8 +457,80 @@ formulas (24),(25) and (26).
 
 [8] Lance Fortnow. Kolmogorov Complexity. 2000.
 
+[9] Aidan Rocke (https://mathoverflow.net/users/56328/aidan-rocke), information-theoretic derivation of the prime number theorem, URL (version: 2021-04-08): https://mathoverflow.net/q/384109
+
 \newpage 
 
+\appendix
+
+\section{An invariance theorem for algorithmically random data}
+
+Let's suppose we have a natural signal described by the process $X$: 
+
+\begin{equation}
+x_n \in \{0,1\}, x_{n+1} = \varphi \circ x_{1:n}	
+\end{equation}
+
+If we should use machine learning to approximate $\varphi$ given the datasets 
+$X_N^{\text{train}}= \{x_i\}_{i=1}^N,X_N^{\text{test}}= \{x_i\}_{i=N+1}^{2N}$
+such that for any $\hat{f} \in F_{\theta}$: 
+
+\begin{equation}
+\exists k \in [1,n-1], x_{n+1} = \hat{f} \circ x_{n-k:n} \Rightarrow \delta_{\hat{f}(x_{n-k:n}),x_{n+1}} = 1	
+\end{equation}
+
+then $X_N$ is asymptotically incompressible if for large $N$ any solution to the 
+empirical risk minimisation problem: 
+
+\begin{equation}
+\hat{f} = \max_{f \in F_{\theta}} \frac{1}{N-k} \sum_{n=k+1}^N \delta_{f(x_{n-k:n}),x_{n+1}}
+\end{equation}
+
+has an expected performance: 
+
+\begin{equation}
+\frac{1}{N-k} \sum_{n=N+k+1}^{2N-1} \delta_{\hat{f}(x_{n-k:n}),x_{n+1}}
+ \leq \frac{1}{2}
+\end{equation}
+
+Furthermore, if the dataset is imbalanced i.e. $\frac{1}{N} \sum_{i=1}^N x_i \neq \frac{1}{2}$ then we may generalise this result by introducing the auxiliary definitions: 
+
+\begin{equation}
+y_n = x_{n+1}	
+\end{equation}
+
+\begin{equation}
+\hat{y_n} = \hat{f} \circ x_{n-k:n}
+\end{equation}
+
+\begin{equation}
+\beta_n = \delta_{y_n,\hat{y_n}}	
+\end{equation}
+
+\begin{equation}
+N_1 = \sum_{n=N+k+1}^{2N} \delta_{y_n,1}	
+\end{equation}
+
+\begin{equation}
+N_0 = \sum_{n=N+k+1}^{2N} \delta_{y_n,0}	
+\end{equation}
+
+and so for large $N$, we have: 
+
+\begin{equation}
+\mathcal{L}_N[\hat{f}] = \min \Big[\frac{1}{N_0} \sum_{n=N+k+1}^{2N-1} \delta_{y_n,0} \cdot \beta_n,  \frac{1}{N_1} \sum_{n=N+k+1}^{2N-1} \delta_{y_n,1} \cdot \beta_n \Big] \leq \frac{1}{2}
+\end{equation}
+
+and therefore:
+
+
+\begin{equation}
+\forall \hat{f} \in F_{\theta}, \lim_{N \to \infty} P(\mathcal{L}_N[\hat{f}] > \frac{1}{2}) = 0
+\end{equation}
+
+Finally, as these results are invariant to transformations that preserve the 
+phase-space dimension of $X$, this theorem may be used as an overfitting test 
+for binary sequences that are finite-state incompressible. 
 
 
 \end{document}
