@@ -63,7 +63,8 @@
 
 \begin{abstract}
 Within the setting of rare event modelling, the method of level sets allows 
-us to define an equivalence relation over rare events with distinct rates of entropy production. As a measure of the efficacy of this method it is applied to Cramér's conjecture, an open problem in probabilistic number theory. 
+us to define an equivalence relation over rare events with distinct rates of entropy production. As a measure of the efficacy of this method it is applied to Cramér's conjecture, an open problem in probabilistic number theory. Furthermore, this analysis places strong epistemic limits on the
+application of machine learning to analyse the distribution of primes.
 \end{abstract}
 
 \section{Classifying rare events using level sets}
@@ -276,7 +277,7 @@ By the Shannon source coding theorem, we may infer that $\pi(N)$ primes can't be
 \mathbb{E}[K(X_N)] \sim 	\pi(N) \cdot \ln N \sim N
 \end{equation}
 
-where the identification of $\mathbb{E}[K(X_N)]$ with $\pi(N) \cdot \ln N$ is a direct consequence of the fact that $K(X_N)$ measures the information gained from observing $X_N$ and $\pi(N) \cdot \ln N$ measures the expected information gained from observing $X_N$. From an information-theoretic perspective, this implies that prime encodings are finite-state incompressible.
+where the identification of $\mathbb{E}[K(X_N)]$ with $\pi(N) \cdot \ln N$ is a direct consequence of the fact that $K(X_N)$ measures the information gained from observing $X_N$ and $\pi(N) \cdot \ln N$ measures the expected information gained from observing $X_N$. From an information-theoretic perspective, this implies that prime encodings are finite-state incompressible as they have a maximum entropy distribution.
 
 The only implicit assumption in this derivation is that all the information in the Universe is conserved as it is only in such Universes that Occam's razor is generally applicable. The Law of Conservation of information which dates back to Von Neumann essentially states that the Von Neumann entropy is invariant to Unitary transformations. 
 
@@ -435,11 +436,17 @@ so the relative error converges to zero:
 which provides us with the necessary justifications in our derivation of Cramér's random model, specifically
 formulas (29),(30) and (31).
 
+\newpage 
+
+\section{Conclusion}
+
+The finite-state incompressibility of prime encodings has one important implication which has so far been ignored by the scientific community. 
+
+As humans are finite-state machines, humans can't have developed the notion of prime numbers(i.e. the Unique Factorization Theorem) via inductive inference. The only other possibility, which is consistent with the history of Greek mathematics, is that this notion emerged via deductive reasoning. 
+
 \section*{References}
 
 \small
-
-\textbf{References:}
 
 [1] Cramér, H. "On the Order of Magnitude of the Difference Between Consecutive Prime Numbers." Acta Arith. 2, 23-46, 1936.
 
@@ -458,6 +465,8 @@ formulas (29),(30) and (31).
 [8] Lance Fortnow. Kolmogorov Complexity. 2000.
 
 [9] Aidan Rocke (https://mathoverflow.net/users/56328/aidan-rocke), information-theoretic derivation of the prime number theorem, URL (version: 2021-04-08): https://mathoverflow.net/q/384109
+
+[10] Aidan Rocke (https://mathoverflow.net/users/56328/aidan-rocke), Egyptian number theory, URL (version: 2021-06-22): https://mathoverflow.net/q/395939
 
 \newpage 
 
