@@ -73,7 +73,7 @@ Sequences of rare events that are not finite-state compressible are recurrent, o
 
 If we identify rare events using the function $1_X: \mathbb{N} \rightarrow \{0,1\}$, we may analyse the rate of
 entropy production of the computable binary sequence $X_n = \{x_i\}_{i=1}^n \in \{0,1\}^n$. In order to qualify as a rare event, a randomly sampled element $x_z$ of the sequence $X_n$ must generally
-pass $\pi_x(n)$ tests. These tests $A_i, A_{j \neq i} \in \{A_i\}_{i=1}^{\pi_x(n)}$ are de-correlated as rare events are assumed to be independent of each other: 
+pass $\pi_x(n)$ tests. These tests $A_i, A_{j \neq i} \in \{A_i\}_{i=1}^{\pi_x(n)}$ are de-correlated for rare events that occur independently of each other: 
 
 \begin{equation}
 \forall z \sim U([1,n]), P(z \in A_i \land z \in A_{j \neq i}) = P(z \in A_i ) \cdot P(z \in A_{j \neq i})
@@ -166,7 +166,7 @@ and if we log-transform the state-space $\mathbb{N}$ we have:
 \forall s >1, \zeta_s \circ \ln \big(\mathbb{N}\big) = \sum_{n \in \mathbb{N}} \frac{1}{(\ln n)^s}
 \end{equation}
 
-where the logarithm transports us from the space of integers to the space of bits. It is worth adding that \textit{prime encodings} are of great interest to rare-event modellers as they are not finite-state compressible. This follows from the fact that the prime numbers are empirically-distributed as if they were arranged uniformly, an immediate consequence of the information-theoretic derivation of the Prime Number Theorem [9]. 
+where the logarithm transports us from the space of integers to the space of bits. It is worth adding that \textit{prime encodings} are of great scientific interest as they are not finite-state compressible. This follows from the fact that the prime numbers are empirically-distributed as if they were arranged uniformly, an immediate consequence of the information-theoretic derivation of the Prime Number Theorem [9]. 
 
 \subsection{The typical probability as the average probability}
 
@@ -442,7 +442,16 @@ formulas (29),(30) and (31).
 
 The finite-state incompressibility of prime encodings has one important implication which has so far been ignored by the scientific community. 
 
-As humans are finite-state machines, humans can't have developed the notion of prime numbers(i.e. the Unique Factorization Theorem) via inductive inference. The only other possibility, which is consistent with the history of Greek mathematics, is that this notion emerged via deductive reasoning. 
+As humans are finite-state machines, humans can't have developed the notion of prime numbers via inductive inference. The only other possibility, which is consistent with the history of Greek mathematics, is that this notion emerged via deductive reasoning. More generally, it is not possible for any finite state machine such as a machine learning model to infer the definition of prime numbers(i.e. Unique Factorisation Theorem) from a prime encoding $X_n$ of any length $n$. This is significant because $X_n$ is equivalent to the list of all primes less than or equal to $n$. 
+
+Finally, it is worth clarifying that this analysis does not preclude the application of machine learning to derive number-theoretic insights. In fact, Yang-Hui He recently found machine learning to be particularly effective at identifying interesting structures in the setting of arithmetic geometry and he suspects that it is for the following reason [11]: 
+
+\begin{quote}
+At the most basic level, every computation in algebraic
+geometry, be it a spectral sequence or a Gröbner basis, reduces to finding kernels and cokernels of sets of matrices (over $\mathbb{Z}$ or even over $\mathbb{C}$), albeit of quickly forbidding dimensions. Matrix/tensor manipulation is the heart of any neural network. Number theory, on the other hand, ultimately involves patterns of prime numbers which, as is well known, remain elusive.
+\end{quote}
+
+So we may conclude that the finite-state incompressibility of prime encodings doesn't preclude that datasets from arithmetic geometry are finite-state incompressible. For this reason, machine learning researchers with an interest in number theory ought to focus on arithmetic geometry. 
 
 \section*{References}
 
@@ -467,6 +476,8 @@ As humans are finite-state machines, humans can't have developed the notion of 
 [9] Aidan Rocke (https://mathoverflow.net/users/56328/aidan-rocke), information-theoretic derivation of the prime number theorem, URL (version: 2021-04-08): https://mathoverflow.net/q/384109
 
 [10] Aidan Rocke (https://mathoverflow.net/users/56328/aidan-rocke), Egyptian number theory, URL (version: 2021-06-22): https://mathoverflow.net/q/395939
+
+[11] Yang-Hui He. Deep-Learning the Landscape. Arxiv. 2018. 
 
 \newpage 
 
