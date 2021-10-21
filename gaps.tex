@@ -40,8 +40,7 @@
 \maketitle
 
 \begin{abstract}
-Within the setting of rare event modelling, the method of level sets allows 
-us to define an equivalence relation over rare events with distinct rates of entropy production. This method clarifies the relation between the empirical density of primes and their source distribution which then allows us to address Cramér's conjecture, an open problem in probabilistic number theory. As a natural consequence, this analysis places strong epistemic limits on the
+The method of level sets allows us to define an equivalence relation over sequences of rare events with distinct rates of entropy production. This method clarifies the relation between the empirical density of primes and their source distribution which then allows us to address Cramér's conjecture, an open problem in probabilistic number theory. In consequence, this analysis places strong epistemic limits on the
 application of machine learning to analyse the distribution of primes.
 \end{abstract}
 
@@ -49,7 +48,7 @@ application of machine learning to analyse the distribution of primes.
  
 Sequences of rare events that are not finite-state compressible are recurrent, of variable frequency, and unpredictable relative to a finite-state machine such as a machine learning model. For these reasons, they are of great scientific interest. But, how might we classify rare events that satisfy these criteria? 
 
-If we identify rare events using the function $1_X: \mathbb{N} \rightarrow \{0,1\}$, we may analyse the rate of
+If we identify rare events using the indicator function $1_X: \mathbb{N} \rightarrow \{0,1\}$, we may analyse the rate of
 entropy production of the computable binary sequence $X_n = \{x_i\}_{i=1}^n \in \{0,1\}^n$. In order to qualify as a rare event, a randomly sampled element $x_z$ of the sequence $X_n$ must generally
 pass $\pi_x(n)$ tests. These tests $A_i, A_{j \neq i} \in \{A_i\}_{i=1}^{\pi_x(n)}$ are de-correlated for rare events as these are assumed to occur independently of each other: 
 
@@ -73,7 +72,7 @@ as well as the entropy of the uniformly distributed random variable:
 \forall z \sim U([1,n]), H(X_n) = -\ln \prod_{k=1}^{\pi_x(n)} P(z \in A_k)
 \end{equation}
 
-which is a measure of expected surprise, or the expected information gained from observing a rare event.
+which is a measure of expected surprise, or the expected information gained from observing a rare event. Thus, all the information in $X_n$ is contained in the location of rare events(i.e. unitary values) and the true-positive rate is a robust measure of finite-state incompressibility as explained in the Appendix. 
 
 \newpage 
 
@@ -517,7 +516,7 @@ has an expected performance:
  \leq \frac{1}{2}
 \end{equation}
 
-Furthermore, if the dataset is imbalanced i.e. $\frac{1}{N} \sum_{i=1}^N x_i \neq \frac{1}{2}$ then we may generalise this result by introducing the auxiliary definitions: 
+Furthermore, if the dataset is imbalanced i.e. $\frac{1}{N} \sum_{i=1}^N x_i \neq \frac{1}{2}$ and all the information in the sequence $x_n$ is contained in the location of unitary values then we may generalise this result by introducing the auxiliary definitions: 
 
 \begin{equation}
 y_n = x_{n+1}	
